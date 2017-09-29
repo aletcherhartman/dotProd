@@ -3,37 +3,56 @@
 import UIKit
 
 
-class VectorDot {
-    var i1 = 1
-    var i2 = 1
-    var j1 = 1
-    var j2 = 1
-    var k1 = 1
-    var k2 = 1
+class Vector {
+    var i, j, k : Int
     
-    func dotProd(I1 : Int, I2 : Int, J1 : Int, J2 : Int, K1 : Int, K2 : Int ) -> Int{
-        return (i1 * i2) + (j1 * j2) + (k1 * k2)
+    init(i:Int, j:Int, k:Int){
+        self.i = i
+        self.j = j
+        self.k = k
     }
     
-    func dotAngle(I1 : Int, I2 : Int, J1 : Int, J2 : Int, K1 : Int, K2 : Int ) -> Double{
-        var length1 = sqrt(Double(i1^2 + j1^2 + k1^2))
-        var length2 = sqrt(Double(i2^2 + j2^2 + k2^2))
-        return  acos(Double(VectorDot.dotProd)/(length1*length2))
+    //this works
+    func dotProd(Vector: Vector ) -> Int{
+        return (self.i * Vector.i ) + (self.j * Vector.j) + (self.k * Vector.k)
+    }
+    //
+    
+    func dotAngle(Vector: Vector ) -> Int{
+        var length1 = sqrt(pow(Double(self.i),2.0) + pow(Double(self.j),2.0) + pow(Double(self.k),2.0))
+        var length2 = sqrt(pow(Double(Vector.i),2.0) + pow(Double(Vector.j),2.0) + pow(Double(Vector.k),2.0))
+        length1.round()
+        length2.round()
+        var angle = acos(Double(self.dotProd(Vector: Vector))/(length1*length2))
+        angle.round()
+        return Int(angle)
     }
     
-    func dotPerp(I1 : Int, I2 : Int, J1 : Int, J2 : Int, K1 : Int, K2 : Int ) -> String{
-        if VectorDot.dotAngle < 0 {
+    func dotPerp(Vector: Vector  ) -> String{
+        if self.dotAngle(Vector: Vector) < 0 {
             return " The angle between the vectors is acute. "
-        } else if VectorDot.dotAngle = 0 {
+        } else if self.dotAngle(Vector: Vector) == 0 {
             return " The vectors are perpendicular. "
         }else{
           return " The angle between the vectors is obtuse. "
         }
         
     }
+    
+    //this works
+    func crosProd(Vector: Vector ) -> Int {
+        return ((self.k * Vector.j ) + (self.j * Vector.k)) - ((self.k * Vector.i ) + (self.i * Vector.k)) + ((self.j * Vector.i ) + (self.i * Vector.j))
+    }
+    
+    func ariaXProd(Vector: Vector ) -> Int {
+        return abs(((self.k * Vector.j ) + (self.j * Vector.k)) - ((self.k * Vector.i ) + (self.i * Vector.k)) + ((self.j * Vector.i ) + (self.i * Vector.j)))
+    }
  
 }
-
-print(VectorDot.dotProd)
-print(VectorDot.dotAngle)
-print(VectorDot.dotPerp)
+var vector1 = Vector(i: -5, j: 1, k: 2)
+var vector2 = Vector(i: 3, j: 6, k: -1)
+print(vector1.dotProd(Vector: vector2))
+print(vector1.dotAngle(Vector: vector2))
+print(vector1.dotPerp(Vector: vector2))
+print(vector1.crosProd(Vector: vector2))
+print(vector1.ariaXProd(Vector: vector2))
